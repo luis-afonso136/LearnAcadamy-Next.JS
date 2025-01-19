@@ -76,7 +76,7 @@ export default function Home() {
             <Carousel>
               <CarouselContent>
                 <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="shadow-lg">
+                  <Card className="shadow-lg bg-slate-100">
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg sm:text-xl text-gray-600">
@@ -97,7 +97,7 @@ export default function Home() {
                   </Card>
                 </CarouselItem>
                 <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="shadow-lg">
+                  <Card className="shadow-lg bg-slate-100">
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg sm:text-xl text-gray-600">
@@ -118,7 +118,7 @@ export default function Home() {
                   </Card>
                 </CarouselItem>
                 <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="shadow-lg">
+                  <Card className="shadow-lg bg-slate-100">
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg sm:text-xl text-gray-600">
@@ -140,7 +140,7 @@ export default function Home() {
                 </CarouselItem>
 
                 <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="shadow-lg">
+                  <Card className="shadow-lg bg-slate-100">
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg sm:text-xl text-gray-600">
@@ -184,7 +184,7 @@ export default function Home() {
           <CardContent>
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-center">
               {/* Card 1: React */}
-              <Card className="shadow-lg flex flex-col items-center">
+              <Card className="shadow-lg flex flex-col items-center bg-slate-100">
                 <CardHeader className="text-center">
                   <div className="flex items-center mb-4">
                     <Avatar className="mr-4">
@@ -205,7 +205,7 @@ export default function Home() {
               </Card>
 
               {/* Card 2: JavaScript */}
-              <Card className="shadow-lg flex flex-col items-center">
+              <Card className="shadow-lg flex flex-col items-center bg-slate-100">
                 <CardHeader className="text-center">
                   <div className="flex items-center mb-4">
                     <Avatar className="mr-4">
@@ -229,7 +229,7 @@ export default function Home() {
               </Card>
 
               {/* Card 3: HTML & CSS */}
-              <Card className="shadow-lg flex flex-col items-center">
+              <Card className="shadow-lg flex flex-col items-center bg-slate-100">
                 <CardHeader className="text-center">
                   <div className="flex items-center mb-4">
                     <Avatar className="mr-4">
@@ -253,7 +253,7 @@ export default function Home() {
               </Card>
 
               {/* Card 4: Node.js */}
-              <Card className="shadow-lg flex flex-col items-center">
+              <Card className="shadow-lg flex flex-col items-center bg-slate-100">
                 <CardHeader className="text-center">
                   <div className="flex items-center mb-4">
                     <Avatar className="mr-4">
