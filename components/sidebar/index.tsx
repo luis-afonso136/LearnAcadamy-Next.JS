@@ -1,4 +1,4 @@
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+import { Sheet, SheetTrigger, SheetContent } from "../ui/sheet";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import {
@@ -94,7 +94,7 @@ export function Sidebar() {
           </TooltipProvider>
         </nav>
 
-        <nav className="mt-auto flex flex-col items-center gap-4 px-2 hidden py-5">
+        {/* <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-5">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -110,7 +110,7 @@ export function Sidebar() {
               <TooltipContent side="right">Logout</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-        </nav>
+        </nav> */}
       </aside>
     </div>
   );

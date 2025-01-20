@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   CardHeader,
   Card,
   CardContent,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
+} from "../../components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+} from "../../components/ui/carousel";
+import { Avatar, AvatarImage } from "../../components/ui/avatar";
 import { ArrowBigRight, Atom, Braces, Code, Coffee } from "lucide-react";
 
 import Image from "next/image";
@@ -88,12 +88,7 @@ export default function Home() {
                         <p>Curso de React para iniciantes.</p>
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <Button>
-                        <ArrowBigRight className="w-4 h-4" />
-                        Iniciar
-                      </Button>
-                    </CardContent>
+                    <CardContent></CardContent>
                   </Card>
                 </CarouselItem>
                 <CarouselItem className="md:basis-1/2 lg:basis-1/3">
@@ -109,12 +104,7 @@ export default function Home() {
                         <p>Curso de TailwindCSS para iniciantes.</p>
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <Button>
-                        <ArrowBigRight className="w-4 h-4" />
-                        Iniciar
-                      </Button>
-                    </CardContent>
+                    <CardContent></CardContent>
                   </Card>
                 </CarouselItem>
                 <CarouselItem className="md:basis-1/2 lg:basis-1/3">
@@ -130,12 +120,7 @@ export default function Home() {
                         <p>Curso de React para iniciantes.</p>
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <Button>
-                        <ArrowBigRight className="w-4 h-4" />
-                        Iniciar
-                      </Button>
-                    </CardContent>
+                    <CardContent></CardContent>
                   </Card>
                 </CarouselItem>
 
@@ -152,12 +137,7 @@ export default function Home() {
                         <p>Curso de Java para iniciantes.</p>
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <Button>
-                        <ArrowBigRight className="w-4 h-4" />
-                        Iniciar
-                      </Button>
-                    </CardContent>
+                    <CardContent></CardContent>
                   </Card>
                 </CarouselItem>
               </CarouselContent>

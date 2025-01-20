@@ -1,15 +1,15 @@
 // pages/login.tsx
 
-'use client'; // Adicione esta linha no topo do arquivo
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+"use client"; // Adicione esta linha no topo do arquivo
+import { useState } from "react";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Label } from "../../../components/ui/label";
+import { Card, CardContent, CardHeader } from "../../../components/ui/card";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -17,7 +17,7 @@ export default function LoginPage() {
 
     // Lógica de validação simples
     if (!email || !password) {
-      setError('Preencha todos os campos!');
+      setError("Preencha todos os campos!");
       return;
     }
   };

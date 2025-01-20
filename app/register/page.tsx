@@ -1,17 +1,17 @@
 // pages/register/page.tsx
 
-'use client'; // Adicione esta linha no topo do arquivo
+"use client"; // Adicione esta linha no topo do arquivo
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { useState } from "react";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Label } from "../../../components/ui/label";
+import { Card, CardContent, CardHeader } from "../../../components/ui/card";
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const handleRegister = (e: React.FormEvent) => {
@@ -19,12 +19,12 @@ export default function RegisterPage() {
 
     // Validação simples
     if (!email || !password || !confirmPassword) {
-      setError('Todos os campos são obrigatórios!');
+      setError("Todos os campos são obrigatórios!");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('As senhas não coincidem!');
+      setError("As senhas não coincidem!");
       return;
     }
   };
