@@ -1,25 +1,27 @@
-import { headers } from "next/headers";
-import { auth } from "../../lib/auth";
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
+import { auth } from '../../lib/auth';
+import EditProfileForm from './EditProfileForm';
+import { headers } from 'next/headers';
 
 export default async function ProfilePage() {
-    const session =  await auth.api.getSession({
-        headers: await headers()
-      });
-    
-      if(!session) {
-        return redirect('/')
-      }
+  const session = await auth.api.getSession({ headers: await headers() });
 
-      const user = session?.user;
+  if (!session) {
+    return redirect('/');
+  }
 
-      return (
-        <div className="mt-10 text-center">
-            <h1 className="text-2xl font-bold underline">Profile</h1>
-            <ul>
-                <li>Name: {user.name}</li>
-                <li>Email: {user.email}</li>
-            </ul>
-        </div>
-      )
+  const user = session.user;
+
+  return (
+    <div className="mt-10 text-center ml-14 p-4">
+      <EditProfileForm
+        user={{
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image ?? undefined, // Converte null para undefined
+        }}
+      />
+    </div>
+  );
 }
