@@ -13,6 +13,8 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
 export default async function Cursos() {
+  
+
 
   const session =  await auth.api.getSession({
     headers: await headers()
@@ -21,6 +23,7 @@ export default async function Cursos() {
   if(!session) {
     return redirect('/')
   }
+
   return (
     <div className="sm:ml-14 p-4 bg-slate-100">
       {/* Barra de pesquisa */}
@@ -102,5 +105,6 @@ export default async function Cursos() {
         </Card>
       </section>
     </div>
-  );
+
+  ) 
 }
