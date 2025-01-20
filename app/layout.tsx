@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { cn } from "../../lib/utils";
-import { Sidebar } from "../../components/sidebar";
-import Navbar from "../../components/navbar";
+import { cn } from "../lib/utils";
+import { Sidebar } from "../components/sidebar";
+import Navbar from "../components/navbar";
+import { Toaster } from "../components/ui/toaster";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({
         <Navbar />
         <Sidebar />
         {children}
+        <Toaster />
       </body>
     </html>
   );

@@ -1,15 +1,26 @@
-import { Button } from "../../../components/ui/button";
-import { Input } from "../../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
 import {
   CardHeader,
   Card,
   CardContent,
   CardTitle,
   CardDescription,
-} from "../../../components/ui/card";
+} from "../../components/ui/card";
 import { ArrowBigRight, Code, Search } from "lucide-react";
+import { auth } from "../../lib/auth";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
-export default function Cursos() {
+export default async function Cursos() {
+
+  const session =  await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if(!session) {
+    return redirect('/')
+  }
   return (
     <div className="sm:ml-14 p-4 bg-slate-100">
       {/* Barra de pesquisa */}

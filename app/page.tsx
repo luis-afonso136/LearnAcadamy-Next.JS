@@ -1,19 +1,18 @@
-import { Button } from "../../components/ui/button";
 import {
   CardHeader,
   Card,
   CardContent,
   CardTitle,
   CardDescription,
-} from "../../components/ui/card";
+} from "../components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../../components/ui/carousel";
-import { Avatar, AvatarImage } from "../../components/ui/avatar";
+} from "../components/ui/carousel";
+import { Avatar, AvatarImage } from "../components/ui/avatar";
 import { ArrowBigRight, Atom, Braces, Code, Coffee } from "lucide-react";
 
 import Image from "next/image";

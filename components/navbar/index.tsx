@@ -1,8 +1,15 @@
-import { BookOpen, User, LogIn } from "lucide-react";
-import { Button } from "../ui/button";
+import { BookOpen, User, LogIn, LogOut } from "lucide-react";
+import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
+import { auth } from "../../lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   return (
     <nav className="bg-white text-black py-4 border-b border-gray-300">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -14,18 +21,25 @@ export default function Navbar() {
 
         {/* Links de navegação */}
         <div className="hidden sm:flex space-x-6">
-          <Link href="/login">
-            <Button className="flex items-center bg-black text-white border-2 border-black hover:bg-gray-800 hover:text-white focus:ring-2 focus:ring-gray-300 rounded-lg px-4 py-2 transition duration-300">
+          {session ? (
+            <form action={async () => {
+              'use server'
+              await auth.api.signOut({
+                headers: await headers()
+              })
+              redirect('/')
+            }}>
+              <Button type='submit' className={buttonVariants()}>
+                <LogOut className="w-5 h-5 mr-2 text-white" />
+                Logout
+              </Button>
+            </form>
+          ) : (
+            <Link href="/sign-in" className={buttonVariants()}>
               <LogIn className="w-5 h-5 mr-2 text-white" />
               Login
-            </Button>
-          </Link>
-          <Link href="/register">
-            <Button className="flex items-center bg-black text-white border-2 border-black hover:bg-gray-800 hover:text-white focus:ring-2 focus:ring-gray-300 rounded-lg px-4 py-2 transition duration-300">
-              <User className="w-5 h-5 mr-2 text-white" />
-              Register
-            </Button>
-          </Link>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
