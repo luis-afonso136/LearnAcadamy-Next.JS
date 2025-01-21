@@ -43,7 +43,6 @@ export default function RootLayout({
           attribute="class"
           enableSystem={true}
           defaultTheme="system"
-          disableTransitionOnChange
         >
           <Navbar />
           <Sidebar />

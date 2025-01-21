@@ -48,6 +48,40 @@
           ]
         }
       ]
+    },
+    {
+      "id": "7acb",
+      "name": "Curso de TailwindCSS",
+      "description": "Curso feito para entender as ferramentas do tailwind",
+      "difficulty": "Fácil",
+      "category": "Programacao",
+      "questions": [
+        {
+          "question": "Qual destes esta a usar TailwindCSS",
+          "correctAnswer": "className=\"bg-gray-150\";",
+          "wrongAnswers": [
+            "class=\"text-blue-500\";",
+            "class=\"mb-4\";"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "86b5",
+      "name": "Qualquer",
+      "description": "dsadsadasdsad",
+      "difficulty": "Difícil",
+      "category": "Matematica",
+      "questions": [
+        {
+          "question": "Pergunta Tal",
+          "correctAnswer": "Top Xuxa",
+          "wrongAnswers": [
+            "TOp",
+            "Top"
+          ]
+        }
+      ]
     }
   ]
 }

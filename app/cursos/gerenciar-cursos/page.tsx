@@ -16,6 +16,7 @@ import {
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { toast } from "../../../hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "../../../components/ui/dialog";
 
 interface Course {
   id: number;
@@ -111,7 +112,7 @@ export default function GerenciarCursos() {
 
     // Adiciona tabela das perguntas e respostas
     doc.autoTable({
-      head: [["Pergunta"]],
+      head: [["Perguntas"]],
       body: questions.map(([question, answer]) => [question, answer]),
       startY: 70,
       theme: "grid",
@@ -190,139 +191,144 @@ export default function GerenciarCursos() {
       </Table>
 
       {/* Modal para Edição */}
-      <Modal
-        title="Editar Curso"
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      >
-        {selectedCourse && (
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Coluna 1 - Informações do Curso */}
-            <div className="flex-1 space-y-4 border-r pr-4">
-              <div>
-                <label
-                  htmlFor="course-name"
-                  className="block text-sm font-medium"
-                >
-                  Nome do Curso
-                </label>
-                <Input
-                  id="course-name"
-                  placeholder="Nome do Curso"
-                  value={selectedCourse.name}
-                  onChange={(e) =>
-                    setSelectedCourse({
-                      ...selectedCourse,
-                      name: e.target.value,
-                    })
-                  }
-                  className="w-full"
-                />
-              </div>
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+  <DialogContent className="max-w-4xl w-full"> {/* Aumentando a largura */}
+    <DialogHeader>
+      <DialogTitle>Editar Curso</DialogTitle>
+    </DialogHeader>
 
-              <div>
-                <label
-                  htmlFor="course-description"
-                  className="block text-sm font-medium"
-                >
-                  Descrição
-                </label>
-                <textarea
-                  id="course-description"
-                  placeholder="Descrição"
-                  className="w-full p-2 border rounded-md"
-                  value={selectedCourse.description}
-                  onChange={(e) =>
-                    setSelectedCourse({
-                      ...selectedCourse,
-                      description: e.target.value,
-                    })
-                  }
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="course-difficulty"
-                  className="block text-sm font-medium"
-                >
-                  Dificuldade
-                </label>
-                <select
-                  id="course-difficulty"
-                  value={selectedCourse.difficulty}
-                  onChange={(e) =>
-                    setSelectedCourse({
-                      ...selectedCourse,
-                      difficulty: e.target.value,
-                    })
-                  }
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="" disabled>
-                    Selecione a dificuldade
-                  </option>
-                  <option value="Fácil">Fácil</option>
-                  <option value="Intermediário">Intermediário</option>
-                  <option value="Difícil">Difícil</option>
-                </select>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="course-category"
-                  className="block text-sm font-medium"
-                >
-                  Categoria
-                </label>
-                <Input
-                  id="course-category"
-                  placeholder="Categoria"
-                  value={selectedCourse.category}
-                  onChange={(e) =>
-                    setSelectedCourse({
-                      ...selectedCourse,
-                      category: e.target.value,
-                    })
-                  }
-                  className="w-full"
-                />
-              </div>
-            </div>
-
-            {/* Coluna 2 - Perguntas e Respostas */}
-            <div className="flex-1">
-              <h3 className="text-lg font-medium mb-4">
-                Perguntas e Respostas
-              </h3>
-              <div className="grid grid-cols-1 gap-4">
-                {selectedCourse.questions.map((qna, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-4 border rounded-md shadow-sm"
-                  >
-                    <div>
-                      <strong>Pergunta {index + 1}: </strong>
-                      <span>{qna.question}</span>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      color="destructive"
-                      onClick={() => handleDeleteQuestion(index)}
-                    >
-                      <Trash className="w-4 h-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
+    {selectedCourse && (
+      <div className="flex flex-col md:flex-row gap-4">
+        {/* Coluna 1 - Informações do Curso */}
+        <div className="flex-1 space-y-4 border-r pr-4">
+          <div>
+            <label
+              htmlFor="course-name"
+              className="block text-sm font-medium"
+            >
+              Nome do Curso
+            </label>
+            <Input
+              id="course-name"
+              placeholder="Nome do Curso"
+              value={selectedCourse.name}
+              onChange={(e) =>
+                setSelectedCourse({
+                  ...selectedCourse,
+                  name: e.target.value,
+                })
+              }
+              className="w-full"
+            />
           </div>
-        )}
-        <Button onClick={handleSave} className="mt-4">
-          Salvar
-        </Button>
-      </Modal>
+
+          <div>
+            <label
+              htmlFor="course-description"
+              className="block text-sm font-medium"
+            >
+              Descrição
+            </label>
+            <textarea
+              id="course-description"
+              placeholder="Descrição"
+              className="w-full p-2 border rounded-md"
+              value={selectedCourse.description}
+              onChange={(e) =>
+                setSelectedCourse({
+                  ...selectedCourse,
+                  description: e.target.value,
+                })
+              }
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="course-difficulty"
+              className="block text-sm font-medium"
+            >
+              Dificuldade
+            </label>
+            <select
+              id="course-difficulty"
+              value={selectedCourse.difficulty}
+              onChange={(e) =>
+                setSelectedCourse({
+                  ...selectedCourse,
+                  difficulty: e.target.value,
+                })
+              }
+              className="w-full p-2 border rounded-md"
+            >
+              <option value="" disabled>
+                Selecione a dificuldade
+              </option>
+              <option value="Fácil">Fácil</option>
+              <option value="Intermediário">Intermediário</option>
+              <option value="Difícil">Difícil</option>
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="course-category"
+              className="block text-sm font-medium"
+            >
+              Categoria
+            </label>
+            <Input
+              id="course-category"
+              placeholder="Categoria"
+              value={selectedCourse.category}
+              onChange={(e) =>
+                setSelectedCourse({
+                  ...selectedCourse,
+                  category: e.target.value,
+                })
+              }
+              className="w-full"
+            />
+          </div>
+        </div>
+
+        {/* Coluna 2 - Perguntas e Respostas */}
+        <div className="flex-1">
+          <h3 className="text-lg font-medium mb-4">Perguntas e Respostas</h3>
+          <div className="grid grid-cols-1 gap-4">
+            {selectedCourse.questions.map((qna, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between p-4 border rounded-md shadow-sm"
+              >
+                <div>
+                  <strong>Pergunta {index + 1}: </strong>
+                  <span>{qna.question}</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleDeleteQuestion(index)}
+                >
+                  <Trash className="w-4 h-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+
+    <DialogFooter>
+      <Button variant="ghost" onClick={() => setIsModalOpen(false)}>
+        Cancelar
+      </Button>
+      <Button onClick={handleSave}>Salvar</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
+
     </div>
   );
 }

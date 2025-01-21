@@ -19,6 +19,8 @@ import {
 } from "../../components/ui/card";
 import { ArrowBigRight, Edit2, PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "../../components/ui/skeleton";
+import { toast } from "../../hooks/use-toast";
 
 interface Course {
   id?: number; // Continua opcional
@@ -37,6 +39,8 @@ export default function Cursos() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [searchQuery, setSearchQuery] = useState(""); // Estado para a pesquisa
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]); // Estado para os cursos filtrados
+  const [loading, setLoading] = useState(true); // Estado de carregamento
+  const [isDialogOpen, setIsDialogOpen] = useState(false); 
 
   const [newCourse, setNewCourse] = useState<Course>({
     name: "",
@@ -59,6 +63,7 @@ export default function Cursos() {
       const data = await response.json();
       setCourses(data);
       setFilteredCourses(data); // Inicializa com todos os cursos
+      setLoading(false); // Finaliza o carregamento
     };
     fetchCourses();
   }, []);
@@ -90,6 +95,16 @@ export default function Cursos() {
     if (response.ok) {
       const createdCourse = await response.json();
       setCourses([...courses, createdCourse]); // O JSON Server retorna o curso criado com o ID atribuído
+
+      // Mostra o toast de sucesso
+      toast({
+        title: "Curso criado com sucesso!",
+        description: `O curso "${createdCourse.name}" foi adicionado.`,
+      });
+
+      // Fecha o modal e limpa os campos
+      setIsDialogOpen(false);
+
       setNewCourse({
         name: "",
         description: "",
@@ -317,7 +332,7 @@ export default function Cursos() {
                       Adicionar Pergunta
                     </Button>
                   </div>
-                  <div>
+                  {/* <div>
                     <h4 className="font-medium mb-2">Perguntas Adicionadas</h4>
                     {newCourse.questions.map((q, index) => (
                       <div
@@ -335,7 +350,7 @@ export default function Cursos() {
                         </p>
                       </div>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <Button onClick={handleAddCourse} className="mt-4">
@@ -351,26 +366,42 @@ export default function Cursos() {
       </div>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {filteredCourses.map((course) => (
-          <Card key={course.id}>
-            <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">
-                {course.name}
-              </CardTitle>
-              <CardDescription>{course.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Categoria: {course.category}</p>
-              <p>Dificuldade: {course.difficulty}</p>
-              <Button
-              className="mt-4" 
-              onClick={() => router.push(`/cursos/${course.id}`)}>
-                <ArrowBigRight className="w-4 h-4 " />
-                Ver Detalhes
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+        {loading
+          ? // Exibe Skeleton enquanto os dados estão sendo carregados
+            Array.from({ length: 8 }).map((_, index) => (
+              <Card key={index}>
+                <CardHeader>
+                  <Skeleton className="h-6 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-1/2" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-3/4 mb-2" />
+                  <Skeleton className="h-10 w-1/2" />
+                </CardContent>
+              </Card>
+            ))
+          : filteredCourses.map((course) => (
+              <Card key={course.id}>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">
+                    {course.name}
+                  </CardTitle>
+                  <CardDescription>{course.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>Categoria: {course.category}</p>
+                  <p>Dificuldade: {course.difficulty}</p>
+                  <Button
+                    className="mt-4"
+                    onClick={() => router.push(`/cursos/${course.id}`)}
+                  >
+                    <ArrowBigRight className="w-4 h-4 " />
+                    Ver Detalhes
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
       </section>
     </div>
   );
