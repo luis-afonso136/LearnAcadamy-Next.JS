@@ -1,0 +1,53 @@
+{
+  "courses": [
+    {
+      "id": "60bc",
+      "name": "Curso de Next.js",
+      "description": "Curso intermedio para aprender sobre os fundamentos do Next.js e as suas ferramentas",
+      "difficulty": "Intermediário",
+      "category": "Programacao",
+      "questions": [
+        {
+          "question": "O que é o Next.js?",
+          "correctAnswer": "Um framework React para construção de aplicações web com renderização do lado do servidor.",
+          "wrongAnswers": [
+            "Um framework JavaScript para desenvolvimento de APIs RESTful.",
+            "Uma biblioteca para gerenciamento de estado em React."
+          ]
+        },
+        {
+          "question": "Qual método no Next.js é utilizado para gerar páginas dinâmicas com base em dados fornecidos em tempo de build?",
+          "correctAnswer": "getStaticProps",
+          "wrongAnswers": [
+            "getInitialProps",
+            "getServerSideProps"
+          ]
+        },
+        {
+          "question": "Qual arquivo é utilizado para configurar rotas no Next.js",
+          "correctAnswer": "Não é necessário configurar rotas manualmente no Next.js.",
+          "wrongAnswers": [
+            "pages/_app.js",
+            "pages/index.js"
+          ]
+        },
+        {
+          "question": "Qual é a principal vantagem da renderização do lado do servidor no Next.js?",
+          "correctAnswer": "Facilita o SEO (otimização para motores de busca).",
+          "wrongAnswers": [
+            "Aumenta o tempo de carregamento da página.",
+            "Permite mais interatividade no front-end"
+          ]
+        },
+        {
+          "question": "Qual comando é usado para iniciar o servidor de desenvolvimento no Next.js?",
+          "correctAnswer": "npm run dev",
+          "wrongAnswers": [
+            "npm start",
+            "next serve"
+          ]
+        }
+      ]
+    }
+  ]
+}
