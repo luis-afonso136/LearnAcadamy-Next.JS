@@ -5,6 +5,7 @@ import { cn } from "../lib/utils";
 import { Sidebar } from "../components/sidebar";
 import Navbar from "../components/navbar";
 import { Toaster } from "../components/ui/toaster";
+import { ThemeProvider } from "../components/theme-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -38,10 +39,17 @@ export default function RootLayout({
           inter.className
         )}
       >
-        <Navbar />
-        <Sidebar />
-        {children}
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          enableSystem={true}
+          defaultTheme="system"
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <Sidebar />
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

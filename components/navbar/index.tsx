@@ -11,11 +11,11 @@ export default async function Navbar() {
   });
 
   return (
-    <nav className="bg-white text-black py-4 border-b border-gray-300">
+    <nav className="py-4 border-b">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo e Nome */}
         <div className="flex items-center">
-          <BookOpen className="w-8 h-8 mr-2 text-black" />
+          <BookOpen className="w-8 h-8 mr-2" />
           <span className="text-2xl font-semibold">LearnAcademy</span>
         </div>
 
@@ -30,13 +30,13 @@ export default async function Navbar() {
               redirect('/')
             }}>
               <Button type='submit' className={buttonVariants()}>
-                <LogOut className="w-5 h-5 mr-2 text-white" />
+                <LogOut className="w-5 h-5 mr-2" />
                 Logout
               </Button>
             </form>
           ) : (
             <Link href="/sign-in" className={buttonVariants()}>
-              <LogIn className="w-5 h-5 mr-2 text-white" />
+              <LogIn className="w-5 h-5 mr-2" />
               Login
             </Link>
           )}

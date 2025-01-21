@@ -134,7 +134,7 @@ export default function GerenciarCursos() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 p-4 sm:ml-14">
+    <div className="min-h-screen p-4 sm:ml-14">
       <Button onClick={handleBack} className="mb-4">
         <ArrowLeft className="mr-2" />
         Voltar
@@ -198,7 +198,7 @@ export default function GerenciarCursos() {
         {selectedCourse && (
           <div className="flex flex-col md:flex-row gap-4">
             {/* Coluna 1 - Informações do Curso */}
-            <div className="flex-1 space-y-4 border-r border-gray-300 pr-4">
+            <div className="flex-1 space-y-4 border-r pr-4">
               <div>
                 <label
                   htmlFor="course-name"
@@ -230,7 +230,7 @@ export default function GerenciarCursos() {
                 <textarea
                   id="course-description"
                   placeholder="Descrição"
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border rounded-md"
                   value={selectedCourse.description}
                   onChange={(e) =>
                     setSelectedCourse({
@@ -257,7 +257,7 @@ export default function GerenciarCursos() {
                       difficulty: e.target.value,
                     })
                   }
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border rounded-md"
                 >
                   <option value="" disabled>
                     Selecione a dificuldade
@@ -299,7 +299,7 @@ export default function GerenciarCursos() {
                 {selectedCourse.questions.map((qna, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-4 bg-white border rounded-md shadow-sm"
+                    className="flex items-center justify-between p-4 border rounded-md shadow-sm"
                   >
                     <div>
                       <strong>Pergunta {index + 1}: </strong>

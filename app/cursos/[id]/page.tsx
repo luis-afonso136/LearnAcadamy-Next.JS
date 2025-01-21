@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { Button } from "../../../components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "../../../components/ui/card";
 import { toast } from "../../../hooks/use-toast";
+import { Progress } from "../../../components/ui/progress"; // Importa o componente de barra de progresso
 
 interface Question {
   question: string;
@@ -23,7 +24,7 @@ interface Course {
 }
 
 export default function CourseDetail() {
-  const { id } = useParams(); // Captura o ID da URL
+  const { id } = useParams();
   const [course, setCourse] = useState<Course | null>(null);
   const [showQuestions, setShowQuestions] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
@@ -55,15 +56,18 @@ export default function CourseDetail() {
       });
 
       setTimeout(() => {
-        router.push("/cursos"); // Redireciona de volta para a página de cursos após o toast
-      }, 3000); // Redireciona após 3 segundos (opcional)
+        router.push("/cursos");
+      }, 3000);
     }
   };
 
   if (!course) return <p>Carregando curso...</p>;
 
+  // Calcula o progresso como uma porcentagem
+  const progress = ((currentQuestion + 1) / course.questions.length) * 100;
+
   return (
-    <div className="min-h-screen bg-slate-100 p-4 sm:ml-14">
+    <div className="min-h-screen p-4 sm:ml-14">
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="text-xl">{course.name}</CardTitle>
@@ -85,29 +89,34 @@ export default function CourseDetail() {
       </Card>
 
       {showQuestions && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Pergunta {currentQuestion + 1}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>{course.questions[currentQuestion].question}</p>
-            <div className="flex flex-col gap-2 mt-4">
-              {/* Mostra respostas em ordem aleatória */}
-              {[...course.questions[currentQuestion].wrongAnswers, course.questions[currentQuestion].correctAnswer]
-                .sort(() => Math.random() - 0.5)
-                .map((answer, index) => (
-                  <Button
-                    key={index}
-                    onClick={() =>
-                      handleNextQuestion(answer === course.questions[currentQuestion].correctAnswer)
-                    }
-                  >
-                    {answer}
-                  </Button>
-                ))}
-            </div>
-          </CardContent>
-        </Card>
+        <>
+          {/* Barra de progresso */}
+          <Progress value={progress} className="mb-6" />
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Pergunta {currentQuestion + 1}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>{course.questions[currentQuestion].question}</p>
+              <div className="flex flex-col gap-2 mt-4">
+                {/* Mostra respostas em ordem aleatória */}
+                {[...course.questions[currentQuestion].wrongAnswers, course.questions[currentQuestion].correctAnswer]
+                  .sort(() => Math.random() - 0.5)
+                  .map((answer, index) => (
+                    <Button
+                      key={index}
+                      onClick={() =>
+                        handleNextQuestion(answer === course.questions[currentQuestion].correctAnswer)
+                      }
+                    >
+                      {answer}
+                    </Button>
+                  ))}
+              </div>
+            </CardContent>
+          </Card>
+        </>
       )}
     </div>
   );

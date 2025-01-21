@@ -122,7 +122,7 @@ export default function Cursos() {
   const router = useRouter(); // Inicialize o hook
 
   return (
-    <div className="min-h-screen bg-slate-100 p-4 sm:ml-14">
+    <div className="min-h-screen p-4 sm:ml-14">
       <div className="flex justify-between items-center mb-6">
         <Input
           placeholder="Buscar curso..."
@@ -171,7 +171,7 @@ export default function Cursos() {
                     <textarea
                       id="course-description"
                       placeholder="Descrição"
-                      className="w-full p-2 border border-gray-300 rounded-md"
+                      className="w-full p-2 border rounded-md"
                       value={newCourse.description}
                       onChange={(e) =>
                         setNewCourse({
@@ -197,7 +197,7 @@ export default function Cursos() {
                           difficulty: e.target.value,
                         })
                       }
-                      className="w-full p-2 border border-gray-300 rounded-md"
+                      className="w-full p-2 border rounded-md"
                     >
                       <option value="">Selecione a Dificuldade</option>
                       <option value="Fácil">Fácil</option>
@@ -322,7 +322,7 @@ export default function Cursos() {
                     {newCourse.questions.map((q, index) => (
                       <div
                         key={index}
-                        className="border p-2 rounded mb-2 bg-gray-50"
+                        className="border p-2 rounded mb-2"
                       >
                         <p>
                           <strong>Pergunta:</strong> {q.question}
@@ -354,7 +354,7 @@ export default function Cursos() {
         {filteredCourses.map((course) => (
           <Card key={course.id}>
             <CardHeader>
-              <CardTitle className="text-lg sm:text-xl text-gray-600">
+              <CardTitle className="text-lg sm:text-xl">
                 {course.name}
               </CardTitle>
               <CardDescription>{course.description}</CardDescription>
@@ -362,8 +362,10 @@ export default function Cursos() {
             <CardContent>
               <p>Categoria: {course.category}</p>
               <p>Dificuldade: {course.difficulty}</p>
-              <Button onClick={() => router.push(`/cursos/${course.id}`)}>
-                <ArrowBigRight className="w-4 h-4" />
+              <Button
+              className="mt-4" 
+              onClick={() => router.push(`/cursos/${course.id}`)}>
+                <ArrowBigRight className="w-4 h-4 " />
                 Ver Detalhes
               </Button>
             </CardContent>
