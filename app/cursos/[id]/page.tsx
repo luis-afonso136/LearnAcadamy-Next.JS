@@ -63,7 +63,7 @@ export default function CourseDetail() {
   if (!course) return <p>Carregando curso...</p>;
 
   return (
-    <div className="p-6 bg-slate-100 sm:ml-14">
+    <div className="min-h-screen bg-slate-100 p-4 sm:ml-14">
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="text-xl">{course.name}</CardTitle>
