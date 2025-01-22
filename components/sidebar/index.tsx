@@ -97,15 +97,15 @@ export function Sidebar() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  href="#"
+                  href="/Admin"
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground
                   transition-colors hover:text-foreground"
                 >
                   <Settings2 className="h-5 w-5" />
-                  <span className="sr-only">Settings</span>
+                  <span className="sr-only">Admin</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">Settings</TooltipContent>
+              <TooltipContent side="right">Admin Panel</TooltipContent>
             </Tooltip>
           </TooltipProvider>
 
