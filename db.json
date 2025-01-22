@@ -65,23 +65,6 @@
           ]
         }
       ]
-    },
-    {
-      "id": "86b5",
-      "name": "Qualquer",
-      "description": "dsadsadasdsad",
-      "difficulty": "Difícil",
-      "category": "Matematica",
-      "questions": [
-        {
-          "question": "Pergunta Tal",
-          "correctAnswer": "Top Xuxa",
-          "wrongAnswers": [
-            "TOp",
-            "Top"
-          ]
-        }
-      ]
     }
   ]
 }
