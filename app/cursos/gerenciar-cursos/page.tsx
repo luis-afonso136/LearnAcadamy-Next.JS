@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../../components/ui/table";
+import { Skeleton } from "../../../components/ui/skeleton";  // Importando o Skeleton
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { toast } from "../../../hooks/use-toast";
@@ -37,21 +38,22 @@ export default function GerenciarCursos() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Estado de loading
 
-  const router = useRouter(); // Adicionando o hook do router
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCourses = async () => {
       const response = await fetch("http://localhost:3001/courses");
       const data = await response.json();
       setCourses(data);
+      setIsLoading(false); // Ao terminar o carregamento, muda o estado de loading
     };
     fetchCourses();
   }, []);
 
-  // Função para voltar à página anterior
   const handleBack = () => {
-    router.back(); // Voltar para a página anterior
+    router.back();
   };
 
   const handleDelete = async (id: number) => {
@@ -98,25 +100,18 @@ export default function GerenciarCursos() {
 
   const handleDownloadPDF = (course: Course) => {
     const doc = new jsPDF();
-
-    // Adiciona o título
     doc.setFontSize(18);
     doc.text("Relatório do Curso", 14, 10);
-
-    // Adiciona os dados principais do curso
     doc.setFontSize(12);
     doc.text(`Nome: ${course.name}`, 14, 20);
     doc.text(`Descrição: ${course.description}`, 14, 30);
     doc.text(`Dificuldade: ${course.difficulty}`, 14, 40);
     doc.text(`Categoria: ${course.category}`, 14, 50);
 
-    // Adiciona as perguntas e respostas
-    doc.text("Perguntas:", 14, 60);
     const questions = course.questions.map((qna, index) => [
       `Pergunta ${index + 1}: ${qna.question}`,
     ]);
 
-    // Adiciona tabela das perguntas e respostas
     doc.autoTable({
       head: [["Perguntas"]],
       body: questions.map(([question, answer]) => [question, answer]),
@@ -124,7 +119,6 @@ export default function GerenciarCursos() {
       theme: "grid",
     });
 
-    // Gera o PDF e permite o download
     doc.save(`${course.name}-relatorio.pdf`);
   };
 
@@ -158,55 +152,75 @@ export default function GerenciarCursos() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {courses.map((course) => (
-            <TableRow key={course.id}>
-              <TableCell className="px-4 py-2">{course.name}</TableCell>
-              <TableCell className="px-4 py-2">{course.description}</TableCell>
-              <TableCell className="px-4 py-2">{course.difficulty}</TableCell>
-              <TableCell className="px-4 py-2">{course.category}</TableCell>
-              <TableCell className="px-4 py-2">
-                <Button
-                  onClick={() => handleEdit(course)}
-                  variant="outline"
-                  size="icon"
-                  className="mr-2"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button
-                  onClick={() => handleDelete(course.id)}
-                  variant="outline"
-                  size="icon"
-                  color="destructive"
-                >
-                  <Trash className="w-4 h-4" />
-                </Button>
-                <Button
-                  onClick={() => handleDownloadPDF(course)}
-                  variant="outline"
-                  size="icon"
-                  color="secondary"
-                  className="ml-2"
-                >
-                  <Download className="w-4 h-4" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {isLoading
+            ? Array(5)
+                .fill(0)
+                .map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="px-4 py-2">
+                      <Skeleton className="h-6 w-full" />
+                    </TableCell>
+                    <TableCell className="px-4 py-2">
+                      <Skeleton className="h-6 w-full" />
+                    </TableCell>
+                    <TableCell className="px-4 py-2">
+                      <Skeleton className="h-6 w-full" />
+                    </TableCell>
+                    <TableCell className="px-4 py-2">
+                      <Skeleton className="h-6 w-full" />
+                    </TableCell>
+                    <TableCell className="px-4 py-2">
+                      <Skeleton className="h-6 w-20" />
+                    </TableCell>
+                  </TableRow>
+                ))
+            : courses.map((course) => (
+                <TableRow key={course.id}>
+                  <TableCell className="px-4 py-2">{course.name}</TableCell>
+                  <TableCell className="px-4 py-2">{course.description}</TableCell>
+                  <TableCell className="px-4 py-2">{course.difficulty}</TableCell>
+                  <TableCell className="px-4 py-2">{course.category}</TableCell>
+                  <TableCell className="px-4 py-2">
+                    <Button
+                      onClick={() => handleEdit(course)}
+                      variant="outline"
+                      size="icon"
+                      className="mr-2"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(course.id)}
+                      variant="outline"
+                      size="icon"
+                      color="destructive"
+                    >
+                      <Trash className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      onClick={() => handleDownloadPDF(course)}
+                      variant="outline"
+                      size="icon"
+                      color="secondary"
+                      className="ml-2"
+                    >
+                      <Download className="w-4 h-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
         </TableBody>
       </Table>
 
-      {/* Modal para Edição */}
+      {/* Modal de Edição */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-4xl w-full">
-          {" "}
-          {/* Aumentando a largura */}
           <DialogHeader>
             <DialogTitle>Editar Curso</DialogTitle>
           </DialogHeader>
           {selectedCourse && (
             <div className="flex flex-col md:flex-row gap-4">
-              {/* Coluna 1 - Informações do Curso */}
+              {/* Informações do Curso */}
               <div className="flex-1 space-y-4 border-r pr-4">
                 <div>
                   <label
@@ -299,10 +313,9 @@ export default function GerenciarCursos() {
                 </div>
               </div>
 
-              {/* Coluna 2 - Perguntas */}
+              {/* Perguntas */}
               <div className="flex-1">
                 <h3 className="text-lg font-medium mb-4">Perguntas</h3>
-                {/* Adicionando limite de altura e overflow-scroll */}
                 <div className="grid grid-cols-1 gap-4 max-h-64 overflow-y-auto border rounded-md p-2">
                   {selectedCourse.questions.map((qna, index) => (
                     <div

@@ -39,9 +39,7 @@ export default function Home() {
           <CardContent className="flex items-center">
             {/* Contêiner do Texto - Parte Esquerda */}
             <div className="flex-1">
-              <h2 className="text-3xl font-semibold mb-4 mt-4">
-                Sobre Nós
-              </h2>
+              <h2 className="text-3xl font-semibold mb-4 mt-4">Sobre Nós</h2>
               <p className="text-lg mb-4">
                 Somos uma plataforma dedicada a oferecer cursos práticos e
                 inovadores de fácil acesso na área de programação. Nós queremos
@@ -85,10 +83,17 @@ export default function Home() {
                         <Code className="w-6 h-6" />
                       </div>
                       <CardDescription>
-                        <p>Curso de React para iniciantes.</p>
+                        <p>Curso de HTML para iniciantes.</p>
                       </CardDescription>
                     </CardHeader>
-                    <CardContent></CardContent>
+                    <CardContent>
+                      Neste curso de HTML, você aprenderá os conceitos básicos
+                      de estruturação de páginas web. Descubra como criar e
+                      organizar conteúdos, incluindo textos, imagens e links,
+                      utilizando as tags essenciais do HTML. Ao final, você será
+                      capaz de construir páginas web funcionais e bem
+                      estruturadas.
+                    </CardContent>
                   </Card>
                 </CarouselItem>
                 <CarouselItem className="md:basis-1/2 lg:basis-1/3">
@@ -104,7 +109,14 @@ export default function Home() {
                         <p>Curso de TailwindCSS para iniciantes.</p>
                       </CardDescription>
                     </CardHeader>
-                    <CardContent></CardContent>
+                    <CardContent>
+                      O Curso de TailwindCSS é uma introdução completa ao
+                      framework de CSS utilitário mais popular do momento.
+                      TailwindCSS permite criar designs rápidos e responsivos
+                      com um conjunto de classes simples, mas poderosas, que
+                      oferecem controle total sobre a aparência dos seus
+                      componentes.
+                    </CardContent>
                   </Card>
                 </CarouselItem>
                 <CarouselItem className="md:basis-1/2 lg:basis-1/3">
@@ -120,7 +132,14 @@ export default function Home() {
                         <p>Curso de React para iniciantes.</p>
                       </CardDescription>
                     </CardHeader>
-                    <CardContent></CardContent>
+                    <CardContent>
+                      Neste curso de React, você aprenderá a criar interfaces
+                      dinâmicas e interativas utilizando componentes
+                      reutilizáveis. Abordaremos os principais conceitos da
+                      biblioteca, como estados, props e hooks. Ao final, você
+                      estará pronto para desenvolver aplicações web modernas e
+                      escaláveis.
+                    </CardContent>
                   </Card>
                 </CarouselItem>
 
@@ -137,7 +156,14 @@ export default function Home() {
                         <p>Curso de Java para iniciantes.</p>
                       </CardDescription>
                     </CardHeader>
-                    <CardContent></CardContent>
+                    <CardContent>
+                      Neste curso de Java, você aprenderá os fundamentos da
+                      programação orientada a objetos, incluindo classes,
+                      herança e interfaces. Exploraremos a sintaxe da linguagem
+                      e estruturas de controle , além de práticas para criar
+                      aplicações eficientes. Ao final, você desenvolver
+                      desenvolver programas em Java.
+                    </CardContent>
                   </Card>
                 </CarouselItem>
               </CarouselContent>

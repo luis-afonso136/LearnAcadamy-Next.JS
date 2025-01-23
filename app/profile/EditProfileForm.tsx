@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -12,7 +12,16 @@ import {
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
-import { toast } from "../../hooks/use-toast"; // Importa a função de toast
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from "../../components/ui/dialog";
+import { Textarea } from "../../components/ui/textarea";
+import { Bell, Mail } from "lucide-react";
+import { toast } from "../../hooks/use-toast";
+
+interface User {
+  id: string;
+  name: string;
+}
 
 interface EditProfileFormProps {
   user: {
@@ -29,7 +38,57 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
   const [image, setImage] = useState(user.image || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [message, setMessage] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const router = useRouter();
+
+  // Fetch existing users
+  useEffect(() => {
+    async function fetchUsers() {
+      const res = await fetch("/api/user");
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(data);
+      }
+    }
+    fetchUsers();
+  }, []);
+
+  const handleSendMessage = async () => {
+    if (!selectedUser) return;
+
+    try {
+      const response = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          toUserId: selectedUser.id,
+          fromUserId: user.id,
+          message,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao enviar mensagem");
+      }
+
+      toast({
+        title: `Mensagem enviada para ${selectedUser.name}`,
+        description: "O usuário foi notificado",
+      });
+
+      setMessage("");
+      setIsDialogOpen(false);
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Não foi possível enviar a mensagem",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,14 +107,16 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
       }
 
       toast({
-        title: "Alterações salvas com sucesso!", variant: 'default',
-      }) 
+        title: "Alterações salvas com sucesso!",
+        variant: "default",
+      });
       router.refresh();
     } catch (err: any) {
       setError(err.message);
       toast({
-        title: "Erro ao salvar alterações!", variant: 'destructive' 
-      }); 
+        title: "Erro ao salvar alterações!",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -80,6 +141,41 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
               <p className="text-sm text-muted-foreground">
                 Email: {user.email}
               </p>
+            </div>
+            <div className="flex space-x-4">
+              {/* Messages Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Mail className="w-5 h-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <p className="px-3 py-1 text-sm text-muted-foreground">Selecionar usuário</p>
+                  {users.length > 0 ? (
+                    users.map((u) => (
+                      <DropdownMenuItem
+                        key={u.id}
+                        onClick={() => {
+                          setSelectedUser(u);
+                          setIsDialogOpen(true);
+                        }}
+                      >
+                        {u.name}
+                      </DropdownMenuItem>
+                    ))
+                  ) : (
+                    <DropdownMenuItem disabled>
+                      Nenhum usuário encontrado
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Notifications Button */}
+              <Button variant="outline" size="icon">
+                <Bell className="w-5 h-5" />
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -142,6 +238,34 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
           </CardContent>
         </Card>
       </div>
+
+      {/* Dialog for sending a message */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Enviar mensagem para {selectedUser?.name}</DialogTitle>
+            <DialogDescription>
+              Escreva a mensagem que deseja enviar.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Textarea
+              placeholder="Digite sua mensagem..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsDialogOpen(false)}
+            >
+              Cancelar
+            </Button>
+            <Button onClick={handleSendMessage}>Enviar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

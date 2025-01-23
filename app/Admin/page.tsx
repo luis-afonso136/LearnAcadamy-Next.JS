@@ -29,6 +29,7 @@ import {
   SelectItem,
 } from "../../components/ui/select";
 import { Edit, Trash } from "lucide-react";
+import { Skeleton } from "../../components/ui/skeleton";  // Importando o componente Skeleton
 
 interface UserData {
   id?: string;
@@ -42,6 +43,7 @@ export default function AdminPage() {
   const [users, setUsers] = useState<UserData[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Estado de carregamento
 
   // Fetch users
   useEffect(() => {
@@ -49,6 +51,7 @@ export default function AdminPage() {
       const res = await fetch("/api/user");
       const data = await res.json();
       setUsers(data);
+      setIsLoading(false); // Atualizando o estado para indicar que o carregamento terminou
     }
     fetchUsers();
   }, []);
@@ -99,37 +102,47 @@ export default function AdminPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.role}</TableCell>
-              <TableCell>
-                <Button
-                  className="p-2 mr-2 rounded"
-                  onClick={() => {
-                    setSelectedUser(user);
-                    setIsDialogOpen(true);
-                  }}
-                  variant="outline"
-                  size="icon"
-                  title="Edit User"
-                >
-                  <Edit className="w-4 h-4"  />
-                </Button>
-                <Button
-                  className="p-2 rounded mr-2"
-                  onClick={() => handleDelete(user.id!)}
-                  variant="outline"
-                  size="icon"
-                  color="destructive"
-                  title="Delete User"
-                >
-                  <Trash className="w-4 h-4"  />
-                </Button>
-              </TableCell>
+          {isLoading ? (
+            // Skeleton para cada célula enquanto os dados são carregados
+            <TableRow>
+              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-full" /></TableCell>
             </TableRow>
-          ))}
+          ) : (
+            users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell>
+                  <Button
+                    className="p-2 mr-2 rounded"
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setIsDialogOpen(true);
+                    }}
+                    variant="outline"
+                    size="icon"
+                    title="Edit User"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    className="p-2 rounded mr-2"
+                    onClick={() => handleDelete(user.id!)}
+                    variant="outline"
+                    size="icon"
+                    color="destructive"
+                    title="Delete User"
+                  >
+                    <Trash className="w-4 h-4" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
 
