@@ -85,7 +85,24 @@ export default function Cursos() {
   };
 
   // Adiciona um novo curso ao JSON Server
-  const handleAddCourse = async () => {
+  // Função de validação para garantir que todos os campos obrigatórios sejam preenchidos
+const validateCourse = () => {
+  if (!newCourse.name || !newCourse.category || !newCourse.difficulty || !newCourse.description) {
+    toast({
+      title: "Erro ao adicionar curso",
+      description: "Por favor, preencha todos os campos obrigatórios.",
+      variant: "destructive",
+    });
+    return false;
+  }
+  return true;
+};
+
+// Modificação na função de adição de curso para incluir a validação
+const handleAddCourse = async () => {
+  if (!validateCourse()) return;
+
+  try {
     const response = await fetch("http://localhost:3001/courses", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -94,27 +111,30 @@ export default function Cursos() {
 
     if (response.ok) {
       const createdCourse = await response.json();
-      setCourses([...courses, createdCourse]); // O JSON Server retorna o curso criado com o ID atribuído
-
-      // Mostra o toast de sucesso
+      setCourses([...courses, createdCourse]);
       toast({
         title: "Curso criado com sucesso!",
         description: `O curso "${createdCourse.name}" foi adicionado.`,
       });
-
-      // Fecha o modal e limpa os campos
       setIsDialogOpen(false);
-
-      setNewCourse({
-        name: "",
-        description: "",
-        difficulty: "",
-        category: "",
-        questions: [],
+      setNewCourse({ name: "", description: "", difficulty: "", category: "", questions: [] });
+      setFilteredCourses([...courses, createdCourse]);
+    } else {
+      toast({
+        title: "Erro ao criar curso",
+        description: "Ocorreu um erro ao tentar criar o curso. Tente novamente.",
+        variant: "destructive",
       });
-      setFilteredCourses([...courses, createdCourse]); // Atualiza os cursos filtrados
     }
-  };
+  } catch (error) {
+    toast({
+      title: "Erro de rede",
+      description: "Não foi possível se conectar ao servidor. Verifique sua conexão.",
+      variant: "destructive",
+    });
+  }
+};
+
 
   // Adiciona uma nova pergunta ao curso
   const handleAddQuestion = () => {

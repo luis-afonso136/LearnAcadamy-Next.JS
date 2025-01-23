@@ -9,14 +9,28 @@ import {
   CardDescription,
   CardContent,
 } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
+import { Button, buttonVariants } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from "../../components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+} from "../../components/ui/dialog";
 import { Textarea } from "../../components/ui/textarea";
-import { Bell, Mail } from "lucide-react";
+import { AppWindowMacIcon, Bell, Mail, Shield } from "lucide-react";
 import { toast } from "../../hooks/use-toast";
+import Link from "next/link";
 
 interface User {
   id: string;
@@ -151,7 +165,9 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
-                  <p className="px-3 py-1 text-sm text-muted-foreground">Selecionar usuário</p>
+                  <p className="px-3 py-1 text-sm text-muted-foreground">
+                    Selecionar usuário
+                  </p>
                   {users.length > 0 ? (
                     users.map((u) => (
                       <DropdownMenuItem
@@ -172,10 +188,18 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {/* Notifications Button */}
               <Button variant="outline" size="icon">
                 <Bell className="w-5 h-5" />
               </Button>
+
+              {/* Renderiza o botão Admin somente se o e-mail tiver @admin */}
+              {user.email.includes("@admin") && (
+                <Link href="/Admin">
+                  <Button variant="outline" size="icon">
+                    <Shield className="w-5 h-5" />
+                  </Button>
+                </Link>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -256,10 +280,7 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
             />
           </div>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsDialogOpen(false)}
-            >
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
               Cancelar
             </Button>
             <Button onClick={handleSendMessage}>Enviar</Button>
