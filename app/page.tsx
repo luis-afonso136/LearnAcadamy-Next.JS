@@ -52,7 +52,7 @@ export default function Home() {
             {/* Contêiner da Imagem - Parte Direita */}
             <div className="w-1/3 ml-16 mt-8">
               <Image
-                src="/images/LearnAcadamy3.png"
+                src="/images/LearnAcadamy3.preto.png"
                 alt="LearnAcademy"
                 width={140}
                 height={140}

@@ -146,7 +146,7 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
           </CardHeader>
           <CardContent className="flex flex-col items-center space-y-4">
             <img
-              src={user.image || "/images/default-user.png"}
+              src={user.image || "/images/avatar-default.png"}
               alt="Profile Picture"
               className="w-24 h-24 rounded-full border"
             />

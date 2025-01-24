@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../../../components/ui/button";
 import { Modal } from "../../../components/ui/modal";
-import { Trash, Edit, ArrowLeft, Download } from "lucide-react";
+import { Trash, Edit, Download, ArrowLeftCircle } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import { useRouter } from "next/navigation";
 import {
@@ -137,7 +137,7 @@ export default function GerenciarCursos() {
   return (
     <div className="min-h-screen p-4 sm:ml-14">
       <Button onClick={handleBack} className="mb-4">
-        <ArrowLeft className="mr-2" />
+        <ArrowLeftCircle className="mr-2" />
         Voltar
       </Button>
       <h2 className="text-2xl mb-4">Gerenciar Cursos</h2>

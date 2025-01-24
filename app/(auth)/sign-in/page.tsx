@@ -19,7 +19,6 @@ import { Input } from "../../../components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,7 +27,7 @@ import {
 import { signInFromSchema } from "../../../lib/auth-schema";
 import { toast } from "../../../hooks/use-toast";
 import { authClient } from "../../../lib/auth-client";
-
+import { Mail, Lock } from "lucide-react"; // Importando ícones
 
 export default function SignIn() {
   const form = useForm<z.infer<typeof signInFromSchema>>({
@@ -40,28 +39,31 @@ export default function SignIn() {
   });
 
   async function onSubmit(values: z.infer<typeof signInFromSchema>) {
-    const { email, password} = values;
-    const { data, error } = await authClient.signIn.email({
-      email,
-      password,
-      callbackURL: "/cursos",
-    }, {
-      onRequest: () => {
-        toast({
-          title: "Carregando...",
-        })
+    const { email, password } = values;
+    const { data, error } = await authClient.signIn.email(
+      {
+        email,
+        password,
+        callbackURL: "/cursos",
       },
-      onSuccess: () => {
-        form.reset()
-      },
-      onError: (ctx) => {
-        toast({ title: ctx.error.message, variant: 'destructive' });
-        form.setError('email', {
-          type: 'manual',
-          message: ctx.error.message
-        })
-      },
-    });
+      {
+        onRequest: () => {
+          toast({
+            title: "Carregando...",
+          });
+        },
+        onSuccess: () => {
+          form.reset();
+        },
+        onError: (ctx) => {
+          toast({ title: ctx.error.message, variant: "destructive" });
+          form.setError("email", {
+            type: "manual",
+            message: ctx.error.message,
+          });
+        },
+      }
+    );
   }
 
   return (
@@ -74,7 +76,6 @@ export default function SignIn() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-
             <FormField
               control={form.control}
               name="email"
@@ -82,9 +83,15 @@ export default function SignIn() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Introduza o seu email" {...field} />
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-2.5 text-muted-foreground" size={20} />
+                      <Input
+                        placeholder="Introduza o seu email"
+                        {...field}
+                        className="pl-10"
+                      />
+                    </div>
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -97,13 +104,23 @@ export default function SignIn() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Introduza a sua password" {...field} />
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-2.5 text-muted-foreground" size={20} />
+                      <Input
+                        type="password"
+                        placeholder="Introduza a sua password"
+                        {...field}
+                        className="pl-10"
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button  className="w-full" type="submit">Submit</Button>
+            <Button className="w-full" type="submit">
+              Submit
+            </Button>
           </form>
         </Form>
       </CardContent>

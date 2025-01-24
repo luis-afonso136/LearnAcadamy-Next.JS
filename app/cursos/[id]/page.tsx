@@ -7,6 +7,7 @@ import { Button } from "../../../components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "../../../components/ui/card";
 import { toast } from "../../../hooks/use-toast";
 import { Progress } from "../../../components/ui/progress"; // Importa o componente de barra de progresso
+import { ArrowLeftCircle } from "lucide-react";
 
 interface Question {
   question: string;
@@ -66,8 +67,16 @@ export default function CourseDetail() {
   // Calcula o progresso como uma porcentagem
   const progress = ((currentQuestion + 1) / course.questions.length) * 100;
 
+  const handleBack = () => {
+    router.back();
+  };
+
   return (
     <div className="min-h-screen p-4 sm:ml-14">
+      <Button onClick={handleBack} className="mb-4">
+        <ArrowLeftCircle className="mr-2" />
+        Voltar
+      </Button>
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="text-xl">{course.name}</CardTitle>

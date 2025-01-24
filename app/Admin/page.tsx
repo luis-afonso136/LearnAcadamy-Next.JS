@@ -28,8 +28,9 @@ import {
   SelectContent,
   SelectItem,
 } from "../../components/ui/select";
-import { Edit, Trash } from "lucide-react";
+import { ArrowLeft, ArrowLeftCircle, Edit, Trash } from "lucide-react";
 import { Skeleton } from "../../components/ui/skeleton";  // Importando o componente Skeleton
+import { useRouter } from "next/navigation";
 
 interface UserData {
   id?: string;
@@ -44,6 +45,8 @@ export default function AdminPage() {
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Estado de carregamento
+
+  const router = useRouter();
 
   // Fetch users
   useEffect(() => {
@@ -89,8 +92,16 @@ export default function AdminPage() {
     }
   };
 
+  const handleBack = () => {
+    router.back();
+  };
+
   return (
     <div className="min-h-screen p-4 sm:ml-14">
+      <Button onClick={handleBack} className="mb-4">
+        <ArrowLeftCircle className="mr-2" />
+        Voltar
+      </Button>
       <h1 className="text-xl font-bold mb-4">Admin Panel - Users</h1>
       <Table className="mt-4">
         <TableHeader>
@@ -226,7 +237,7 @@ export default function AdminPage() {
               </>
             )}
             <DialogFooter>
-              <Button type="submit">
+              <Button type="submit" className="mt-4">
                 {selectedUser ? "Update" : "Create"} User
               </Button>
             </DialogFooter>

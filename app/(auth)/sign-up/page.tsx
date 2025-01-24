@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -20,7 +19,6 @@ import { Input } from "../../../components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,8 +27,7 @@ import {
 import { formSchema } from "../../../lib/auth-schema";
 import { authClient } from "../../../lib/auth-client";
 import { toast } from "../../../hooks/use-toast";
-
-
+import { User, Mail, Lock } from "lucide-react"; // Importando ícones
 
 export default function SignUp() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,29 +40,32 @@ export default function SignUp() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { name, email, password} = values;
-    const { data, error } = await authClient.signUp.email({
-      email,
-      password,
-      name,
-      callbackURL: "/sign-in",
-    }, {
-      onRequest: () => {
-        toast({
-          title: "Carregando...",
-        })
+    const { name, email, password } = values;
+    const { data, error } = await authClient.signUp.email(
+      {
+        email,
+        password,
+        name,
+        callbackURL: "/sign-in",
       },
-      onSuccess: () => {
-        form.reset()
-      },
-      onError: (ctx) => {
-        toast({ title: ctx.error.message, variant: 'destructive' });
-        form.setError('email', {
-          type: 'manual',
-          message: ctx.error.message
-        })
-      },
-    });
+      {
+        onRequest: () => {
+          toast({
+            title: "Carregando...",
+          });
+        },
+        onSuccess: () => {
+          form.reset();
+        },
+        onError: (ctx) => {
+          toast({ title: ctx.error.message, variant: "destructive" });
+          form.setError("email", {
+            type: "manual",
+            message: ctx.error.message,
+          });
+        },
+      }
+    );
   }
 
   return (
@@ -85,7 +85,14 @@ export default function SignUp() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Introduza o seu nome" {...field} />
+                    <div className="relative">
+                      <User className="absolute left-3 top-2.5 text-muted-foreground" size={20} />
+                      <Input
+                        placeholder="Introduza o seu nome"
+                        {...field}
+                        className="pl-10"
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -99,9 +106,15 @@ export default function SignUp() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Introduza o seu email" {...field} />
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-2.5 text-muted-foreground" size={20} />
+                      <Input
+                        placeholder="Introduza o seu email"
+                        {...field}
+                        className="pl-10"
+                      />
+                    </div>
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -114,13 +127,23 @@ export default function SignUp() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Introduza a sua password" {...field} />
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-2.5 text-muted-foreground" size={20} />
+                      <Input
+                        type="password"
+                        placeholder="Introduza a sua password"
+                        {...field}
+                        className="pl-10"
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">Submit</Button>
+            <Button className="w-full" type="submit">
+              Submit
+            </Button>
           </form>
         </Form>
       </CardContent>
