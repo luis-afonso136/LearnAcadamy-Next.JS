@@ -142,7 +142,7 @@ export default function SignUp() {
               )}
             />
             <Button className="w-full" type="submit">
-              Submit
+              Register
             </Button>
           </form>
         </Form>
