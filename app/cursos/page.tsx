@@ -17,7 +17,7 @@ import {
   CardDescription,
   CardContent,
 } from "../../components/ui/card";
-import { ArrowBigRight, Edit2, PlusCircle } from "lucide-react";
+import { ArrowBigRight, Edit2, PlusCircle, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../../components/ui/skeleton";
 import { toast } from "../../hooks/use-toast";
@@ -32,7 +32,7 @@ interface Course {
     question: string;
     correctAnswer: string;
     wrongAnswers: string[];
-  }[]; 
+  }[];
 }
 
 export default function Cursos() {
@@ -40,7 +40,7 @@ export default function Cursos() {
   const [searchQuery, setSearchQuery] = useState(""); // Estado para a pesquisa
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]); // Estado para os cursos filtrados
   const [loading, setLoading] = useState(true); // Estado de carregamento
-  const [isDialogOpen, setIsDialogOpen] = useState(false); 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [newCourse, setNewCourse] = useState<Course>({
     name: "",
@@ -86,55 +86,67 @@ export default function Cursos() {
 
   // Adiciona um novo curso ao JSON Server
   // Função de validação para garantir que todos os campos obrigatórios sejam preenchidos
-const validateCourse = () => {
-  if (!newCourse.name || !newCourse.category || !newCourse.difficulty || !newCourse.description) {
-    toast({
-      title: "Erro ao adicionar curso",
-      description: "Por favor, preencha todos os campos obrigatórios.",
-      variant: "destructive",
-    });
-    return false;
-  }
-  return true;
-};
-
-// Modificação na função de adição de curso para incluir a validação
-const handleAddCourse = async () => {
-  if (!validateCourse()) return;
-
-  try {
-    const response = await fetch("http://localhost:3001/courses", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newCourse),
-    });
-
-    if (response.ok) {
-      const createdCourse = await response.json();
-      setCourses([...courses, createdCourse]);
+  const validateCourse = () => {
+    if (
+      !newCourse.name ||
+      !newCourse.category ||
+      !newCourse.difficulty ||
+      !newCourse.description
+    ) {
       toast({
-        title: "Curso criado com sucesso!",
-        description: `O curso "${createdCourse.name}" foi adicionado.`,
+        title: "Erro ao adicionar curso",
+        description: "Por favor, preencha todos os campos obrigatórios.",
+        variant: "destructive",
       });
-      setIsDialogOpen(false);
-      setNewCourse({ name: "", description: "", difficulty: "", category: "", questions: [] });
-      setFilteredCourses([...courses, createdCourse]);
-    } else {
+      return false;
+    }
+    return true;
+  };
+
+  // Modificação na função de adição de curso para incluir a validação
+  const handleAddCourse = async () => {
+    if (!validateCourse()) return;
+
+    try {
+      const response = await fetch("http://localhost:3001/courses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newCourse),
+      });
+
+      if (response.ok) {
+        const createdCourse = await response.json();
+        setCourses([...courses, createdCourse]);
+        toast({
+          title: "Curso criado com sucesso!",
+          description: `O curso "${createdCourse.name}" foi adicionado.`,
+        });
+        setIsDialogOpen(false);
+        setNewCourse({
+          name: "",
+          description: "",
+          difficulty: "",
+          category: "",
+          questions: [],
+        });
+        setFilteredCourses([...courses, createdCourse]);
+      } else {
+        toast({
+          title: "Erro ao criar curso",
+          description:
+            "Ocorreu um erro ao tentar criar o curso. Tente novamente.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
       toast({
-        title: "Erro ao criar curso",
-        description: "Ocorreu um erro ao tentar criar o curso. Tente novamente.",
+        title: "Erro de rede",
+        description:
+          "Não foi possível se conectar ao servidor. Verifique sua conexão.",
         variant: "destructive",
       });
     }
-  } catch (error) {
-    toast({
-      title: "Erro de rede",
-      description: "Não foi possível se conectar ao servidor. Verifique sua conexão.",
-      variant: "destructive",
-    });
-  }
-};
-
+  };
 
   // Adiciona uma nova pergunta ao curso
   const handleAddQuestion = () => {
@@ -159,17 +171,25 @@ const handleAddCourse = async () => {
   return (
     <div className="min-h-screen p-4 sm:ml-14">
       <div className="flex justify-between items-center mb-6">
-        <Input
-          placeholder="Buscar curso..."
-          className="w-full sm:w-80"
-          value={searchQuery}
-          onChange={handleSearch} // Conectando a função de pesquisa
-        />
+        <div className="relative w-full sm:w-80">
+          <Search
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            size={20}
+          />
+          <Input
+            placeholder="Buscar curso..."
+            className="w-full pl-10" // Espaço para o ícone
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </div>
         <div className="flex gap-2">
           <Dialog>
             <DialogTrigger asChild>
-              <Button><PlusCircle className="w-4 h-4" />
-              Adicionar Curso</Button>
+              <Button>
+                <PlusCircle className="w-4 h-4" />
+                Adicionar Curso
+              </Button>
             </DialogTrigger>
             <DialogContent className="max-w-5xl">
               {" "}
@@ -379,7 +399,7 @@ const handleAddCourse = async () => {
             </DialogContent>
           </Dialog>
           <Button onClick={() => router.push("/cursos/gerenciar-cursos")}>
-          <Edit2 className="w-4 h-4" />
+            <Edit2 className="w-4 h-4" />
             Gerenciar Cursos
           </Button>
         </div>
