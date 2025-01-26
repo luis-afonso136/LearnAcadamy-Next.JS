@@ -17,17 +17,19 @@ import {
   CardDescription,
   CardContent,
 } from "../../components/ui/card";
-import { ArrowBigRight, Edit2, PlusCircle, Search } from "lucide-react";
+import { ArrowBigRight, Edit, Edit2, PlusCircle, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../../components/ui/skeleton";
 import { toast } from "../../hooks/use-toast";
+import Link from "next/link";
 
 interface Course {
-  id?: number; // Continua opcional
+  id?: number;
   name: string;
   description: string;
   difficulty: string;
   category: string;
+  image: string; // Novo campo para o ícone
   questions: {
     question: string;
     correctAnswer: string;
@@ -35,11 +37,24 @@ interface Course {
   }[];
 }
 
-export default function CursosPage() {
+interface User {
+  id: string;
+  name: string;
+}
+
+interface CursosPageProps {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
+
+export default function CursosPage({ user }: CursosPageProps) {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [searchQuery, setSearchQuery] = useState(""); // Estado para a pesquisa
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]); // Estado para os cursos filtrados
-  const [loading, setLoading] = useState(true); // Estado de carregamento
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [newCourse, setNewCourse] = useState<Course>({
@@ -48,6 +63,7 @@ export default function CursosPage() {
     difficulty: "",
     category: "",
     questions: [],
+    image: "",
   });
 
   const [newQuestion, setNewQuestion] = useState({
@@ -56,25 +72,23 @@ export default function CursosPage() {
     wrongAnswers: ["", ""],
   });
 
-  // Fetch cursos do JSON Server
   useEffect(() => {
     const fetchCourses = async () => {
       const response = await fetch("http://localhost:3001/courses");
       const data = await response.json();
       setCourses(data);
-      setFilteredCourses(data); // Inicializa com todos os cursos
-      setLoading(false); // Finaliza o carregamento
+      setFilteredCourses(data);
+      setLoading(false);
     };
     fetchCourses();
   }, []);
 
-  // Função de filtro para buscar cursos pelo nome
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
 
     if (query === "") {
-      setFilteredCourses(courses); // Se não houver pesquisa, mostra todos os cursos
+      setFilteredCourses(courses);
     } else {
       setFilteredCourses(
         courses.filter((course) =>
@@ -84,14 +98,13 @@ export default function CursosPage() {
     }
   };
 
-  // Adiciona um novo curso ao JSON Server
-  // Função de validação para garantir que todos os campos obrigatórios sejam preenchidos
   const validateCourse = () => {
     if (
       !newCourse.name ||
       !newCourse.category ||
       !newCourse.difficulty ||
-      !newCourse.description
+      !newCourse.description ||
+      !newCourse.image
     ) {
       toast({
         title: "Erro ao adicionar curso",
@@ -103,7 +116,6 @@ export default function CursosPage() {
     return true;
   };
 
-  // Modificação na função de adição de curso para incluir a validação
   const handleAddCourse = async () => {
     if (!validateCourse()) return;
 
@@ -111,12 +123,13 @@ export default function CursosPage() {
       const response = await fetch("http://localhost:3001/courses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newCourse),
+        body: JSON.stringify(newCourse), // Certifique-se de que `newCourse` inclui `icon`
       });
 
       if (response.ok) {
         const createdCourse = await response.json();
         setCourses([...courses, createdCourse]);
+        setFilteredCourses([...courses, createdCourse]);
         toast({
           title: "Curso criado com sucesso!",
           description: `O curso "${createdCourse.name}" foi adicionado.`,
@@ -128,8 +141,8 @@ export default function CursosPage() {
           difficulty: "",
           category: "",
           questions: [],
+          image: "",
         });
-        setFilteredCourses([...courses, createdCourse]);
       } else {
         toast({
           title: "Erro ao criar curso",
@@ -148,7 +161,6 @@ export default function CursosPage() {
     }
   };
 
-  // Adiciona uma nova pergunta ao curso
   const handleAddQuestion = () => {
     setNewCourse({
       ...newCourse,
@@ -166,7 +178,7 @@ export default function CursosPage() {
     });
   };
 
-  const router = useRouter(); // Inicialize o hook
+  const router = useRouter();
 
   return (
     <div className="min-h-screen p-4 sm:ml-14">
@@ -178,7 +190,7 @@ export default function CursosPage() {
           />
           <Input
             placeholder="Buscar curso..."
-            className="w-full pl-10" // Espaço para o ícone
+            className="w-full pl-10"
             value={searchQuery}
             onChange={handleSearch}
           />
@@ -186,19 +198,20 @@ export default function CursosPage() {
         <div className="flex gap-2">
           <Dialog>
             <DialogTrigger asChild>
-              <Button>
-                <PlusCircle className="w-4 h-4" />
-                Adicionar Curso
-              </Button>
+              {(user.email.includes("@professor") ||
+                user.email.includes("@admin")) && (
+                <Button>
+                  <PlusCircle className="w-4 h-4" />
+                  Adicionar Curso
+                </Button>
+              )}
             </DialogTrigger>
             <DialogContent className="max-w-5xl">
               {" "}
-              {/* Modal mais largo */}
               <DialogHeader>
                 <DialogTitle>Adicionar Novo Curso</DialogTitle>
               </DialogHeader>
               <div className="flex gap-8">
-                {/* Container da esquerda */}
                 <div className="w-1/2 flex flex-col gap-4">
                   <div>
                     <label
@@ -280,9 +293,35 @@ export default function CursosPage() {
                       }
                     />
                   </div>
+
+                  <div>
+                    <label
+                      htmlFor="course-image"
+                      className="block text-sm font-medium mb-1"
+                    >
+                      Imagem do Curso
+                    </label>
+                    <Input
+                      type="file"
+                      id="course-image"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = () => {
+                            setNewCourse({
+                              ...newCourse,
+                              image: reader.result as string, // Armazena a imagem em base64
+                            });
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
 
-                {/* Container da direita */}
                 <div className="w-1/2 flex flex-col gap-4">
                   <div className="border p-4 rounded">
                     <h4 className="font-medium mb-2">Adicionar Perguntas</h4>
@@ -398,17 +437,19 @@ export default function CursosPage() {
               </Button>
             </DialogContent>
           </Dialog>
-          <Button onClick={() => router.push("/cursos/gerenciar-cursos")}>
-            <Edit2 className="w-4 h-4" />
-            Gerenciar Cursos
-          </Button>
+          {(user.email.includes("@professor") ||
+            user.email.includes("@admin")) && (
+            <Button onClick={() => router.push("/cursos/gerenciar-cursos")}>
+              <Edit2 className="w-4 h-4" />
+              Gerenciar Cursos
+            </Button>
+          )}
         </div>
       </div>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading
-          ? // Exibe Skeleton enquanto os dados estão sendo carregados
-            Array.from({ length: 8 }).map((_, index) => (
+          ? Array.from({ length: 8 }).map((_, index) => (
               <Card key={index}>
                 <CardHeader>
                   <Skeleton className="h-6 w-3/4 mb-2" />
@@ -422,21 +463,37 @@ export default function CursosPage() {
               </Card>
             ))
           : filteredCourses.map((course) => (
-              <Card key={course.id}>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">
-                    {course.name}
-                  </CardTitle>
-                  <CardDescription>{course.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
+              <Card key={course.id} className="p-4">
+                <div className="flex flex-col md:flex-row items-start">
+                  {/* Imagem no canto superior esquerdo */}
+                  {course.image && (
+                    <img
+                      src={course.image}
+                      alt={`Imagem do curso ${course.name}`}
+                      className="h-16 w-16 object-cover rounded-lg md:mr-4 mb-4 md:mb-0"
+                    />
+                  )}
+
+                  {/* Nome e descrição do curso */}
+                  <div className="flex-1">
+                    <CardHeader className="p-0">
+                      <CardTitle className="text-lg sm:text-xl">
+                        {course.name}
+                      </CardTitle>
+                      <CardDescription>{course.description}</CardDescription>
+                    </CardHeader>
+                  </div>
+                </div>
+
+                {/* Conteúdo adicional abaixo */}
+                <CardContent className="mt-4">
                   <p>Categoria: {course.category}</p>
                   <p>Dificuldade: {course.difficulty}</p>
                   <Button
                     className="mt-4"
                     onClick={() => router.push(`/cursos/${course.id}`)}
                   >
-                    <ArrowBigRight className="w-4 h-4 " />
+                    <ArrowBigRight className="w-4 h-4" />
                     Ver Detalhes
                   </Button>
                 </CardContent>

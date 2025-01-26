@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { Button } from "../../../components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "../../../components/ui/card";
 import { toast } from "../../../hooks/use-toast";
-import { Progress } from "../../../components/ui/progress"; // Importa o componente de barra de progresso
+import { Progress } from "../../../components/ui/progress"; 
 import { ArrowLeftCircle } from "lucide-react";
 
 interface Question {
@@ -22,6 +22,7 @@ interface Course {
   difficulty: string;
   category: string;
   questions: Question[];
+  image: string;
 }
 
 export default function CourseDetail() {
@@ -77,10 +78,25 @@ export default function CourseDetail() {
         <ArrowLeftCircle className="mr-2" />
         Voltar
       </Button>
+
       <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-xl">{course.name}</CardTitle>
-          <p className="text-gray-600">{course.description}</p>
+        <CardHeader className="flex">
+          
+          
+          {course.image && (
+            <div className="w-32 h-32">
+              <img
+                src={course.image}
+                alt={`Imagem do curso ${course.name}`}
+                className="h-full w-full object-cover rounded-lg"
+              />
+            </div>
+          )}
+          {/* Conteúdo à esquerda */}
+          <div className="flex-1 pr-4">
+            <CardTitle className="text-xl">{course.name}</CardTitle>
+            <p>{course.description}</p>
+          </div>
         </CardHeader>
         <CardContent>
           <p>

@@ -15,7 +15,11 @@ export default async function Cursos() {
   return (
     <div>
       <CursosPage
-        
+        user={{
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        }}
       />
     </div>
   );

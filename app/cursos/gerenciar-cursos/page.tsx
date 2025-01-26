@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../../components/ui/table";
-import { Skeleton } from "../../../components/ui/skeleton";  // Importando o Skeleton
+import { Skeleton } from "../../../components/ui/skeleton"; // Importando o Skeleton
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { toast } from "../../../hooks/use-toast";
@@ -32,6 +32,7 @@ interface Course {
   difficulty: string;
   category: string;
   questions: { question: string; answer: string }[];
+  image?: string; // Adicionado o campo opcional de imagem
 }
 
 export default function GerenciarCursos() {
@@ -47,7 +48,7 @@ export default function GerenciarCursos() {
       const response = await fetch("http://localhost:3001/courses");
       const data = await response.json();
       setCourses(data);
-      setIsLoading(false); // Ao terminar o carregamento, muda o estado de loading
+      setIsLoading(false);
     };
     fetchCourses();
   }, []);
@@ -177,8 +178,12 @@ export default function GerenciarCursos() {
             : courses.map((course) => (
                 <TableRow key={course.id}>
                   <TableCell className="px-4 py-2">{course.name}</TableCell>
-                  <TableCell className="px-4 py-2">{course.description}</TableCell>
-                  <TableCell className="px-4 py-2">{course.difficulty}</TableCell>
+                  <TableCell className="px-4 py-2">
+                    {course.description}
+                  </TableCell>
+                  <TableCell className="px-4 py-2">
+                    {course.difficulty}
+                  </TableCell>
                   <TableCell className="px-4 py-2">{course.category}</TableCell>
                   <TableCell className="px-4 py-2">
                     <Button
@@ -310,6 +315,43 @@ export default function GerenciarCursos() {
                     }
                     className="w-full"
                   />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="course-image"
+                    className="block text-sm font-medium"
+                  >
+                    Imagem do Curso
+                  </label>
+                  <Input
+                    type="file"
+                    id="course-image"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          setSelectedCourse({
+                            ...selectedCourse!,
+                            image: reader.result as string, // Atualiza o campo de imagem
+                          });
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="w-full"
+                  />
+                  {selectedCourse?.image && (
+                    <div className="mt-2">
+                      <img
+                        src={selectedCourse.image}
+                        alt={`Imagem do curso ${selectedCourse.name}`}
+                        className="h-40 w-full object-cover rounded-md"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 

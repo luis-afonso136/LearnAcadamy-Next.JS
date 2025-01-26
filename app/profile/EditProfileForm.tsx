@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardContent,
 } from "../../components/ui/card";
-import { Button, buttonVariants } from "../../components/ui/button";
+import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import {
@@ -28,7 +28,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog";
 import { Textarea } from "../../components/ui/textarea";
-import { AppWindowMacIcon, Bell, Mail, Shield } from "lucide-react";
+import { Bell, Edit, Mail, Shield } from "lucide-react";
 import { toast } from "../../hooks/use-toast";
 import Link from "next/link";
 
@@ -136,9 +136,20 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result as string); // Atualiza o estado com a imagem carregada
+      };
+      reader.readAsDataURL(file); // Lê a imagem como URL base64
+    }
+  };
+
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 ">
         <Card className="p-6">
           <CardHeader className="text-center">
             <CardTitle>Perfil</CardTitle>
@@ -146,7 +157,7 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
           </CardHeader>
           <CardContent className="flex flex-col items-center space-y-4">
             <img
-              src={user.image || "/images/avatar-default.png"}
+              src={image || user.image || "/images/avatar-default.png"}
               alt="Profile Picture"
               className="w-24 h-24 rounded-full border"
             />
@@ -245,14 +256,17 @@ export default function EditProfileForm({ user }: EditProfileFormProps) {
 
               <div className="space-y-1">
                 <Label htmlFor="image" className="text-left block">
-                  Imagem (URL)
+                  Imagem
                 </Label>
                 <Input
                   id="image"
-                  type="text"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
                 />
+                <CardDescription className="text-sm text-muted-foreground text-left block">
+                  Selecione uma imagem para atualizar
+                </CardDescription>
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>
