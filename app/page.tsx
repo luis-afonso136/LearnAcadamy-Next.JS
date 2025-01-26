@@ -42,7 +42,7 @@ export default function Home() {
               <h2 className="text-3xl font-semibold mb-4 mt-4">Sobre Nós</h2>
               <p className="text-lg mb-4">
                 Somos uma plataforma dedicada a oferecer cursos práticos e
-                inovadores de fácil acesso na área de programação. Nós queremos
+                inovadores de fácil acesso em todas as áreas. Nós queremos
                 capacitar estudantes e profissionais com as habilidades mais
                 atuais e demandadas no mercado, através de uma experiência de
                 aprendizado acessível e envolvente.
