@@ -190,7 +190,7 @@ export default function CursosPage({ user }: CursosPageProps) {
           />
           <Input
             placeholder="Buscar curso..."
-            className="w-full pl-10"
+            className="w-full pl-10 dark:border-slate-700"
             value={searchQuery}
             onChange={handleSearch}
           />

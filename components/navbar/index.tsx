@@ -20,7 +20,7 @@ export default async function Navbar() {
         </div>
 
         {/* Links de navegação */}
-        <div className="hidden sm:flex space-x-6">
+        <div className="space-x-6">
           {session ? (
             <form action={async () => {
               'use server'

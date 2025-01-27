@@ -46,7 +46,6 @@ export default function SignUp() {
         email,
         password,
         name,
-        callbackURL: "/sign-in",
       },
       {
         onRequest: () => {

@@ -54,9 +54,9 @@ export default function Home() {
               <Image
                 src="/images/LearnAcadamy3.preto.png"
                 alt="LearnAcademy"
-                width={140}
-                height={140}
-                className="rounded-lg ml-auto mr-auto"
+                width={130}
+                height={130}
+                className="rounded-lg ml-auto mr-auto w-auto h-auto"
               />
             </div>
           </CardContent>
@@ -179,67 +179,6 @@ export default function Home() {
           </CardContent>
         </Card>
       </section>
-
-      {/* <section className="mb-32 mt-24">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-semibold">
-            Tecnologias Utilizadas
-          </h2>
-          <p className="">
-            Conheça as principais ferramentas e bibliotecas que utilizamos neste
-            projeto.
-          </p>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 justify-center items-center">
-
-          <div className="flex flex-col items-center">
-            <img
-              src="/images/Next.js.png" // URL do logo do Next.js
-              alt="Next.js"
-              width={150}
-              height={150}
-              className="object-contain"
-            />
-            <p className="mt-2 text-sm">Next.js</p>
-          </div>
-
-
-          <div className="flex flex-col items-center">
-            <img
-              src="https://raw.githubusercontent.com/shadcn/ui/main/apps/www/public/favicon.ico" // URL do logo do shadcn/ui
-              alt="shadcn/ui"
-              width={90}
-              height={90}
-              className="object-contain"
-            />
-            <p className="mt-2 text-sm">shadcn/ui</p>
-          </div>
-
-
-          <div className="flex flex-col items-center">
-            <img
-              src="/images/betterauth.png" // URL exemplo (substitua com a correta)
-              alt="Better Auth"
-              width={90}
-              height={90}
-              className=" object-contain"
-            />
-            <p className="mt-2 text-sm">Better Auth</p>
-          </div>
-
-
-          <div className="flex flex-col items-center">
-            <img
-              src="/images/arcjet.svg" // URL do logo do Arcjet (substitua com a correta)
-              alt="Arcjet"
-              width={170}
-              height={170}
-              className="object-contain"
-            />
-            <p className="mt-2 text-sm">Arcjet</p>
-          </div>
-        </div>
-      </section>  */}
 
       <section className="mb-12">
         <Card className="shadow-lg">
