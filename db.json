@@ -53,7 +53,7 @@
     {
       "id": "7acb",
       "name": "Curso de TailwindCSS",
-      "description": "Curso feito para aprender e entender as ferramentas do tailwind",
+      "description": "Curso feito para aprender e entender as ferramentas básicas do tailwindCSS, bem como as suas estilizações",
       "difficulty": "Fácil",
       "category": "Programacao",
       "questions": [

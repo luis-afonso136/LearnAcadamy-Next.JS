@@ -312,7 +312,7 @@ export default function CursosPage({ user }: CursosPageProps) {
                           reader.onload = () => {
                             setNewCourse({
                               ...newCourse,
-                              image: reader.result as string, // Armazena a imagem em base64
+                              image: reader.result as string,
                             });
                           };
                           reader.readAsDataURL(file);
