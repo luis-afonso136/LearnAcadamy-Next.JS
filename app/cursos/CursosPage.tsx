@@ -465,7 +465,7 @@ export default function CursosPage({ user }: CursosPageProps) {
           : filteredCourses.map((course) => (
               <Card key={course.id} className="p-4">
                 <div className="flex flex-col md:flex-row items-start">
-                  {/* Imagem no canto superior esquerdo */}
+                  
                   {course.image && (
                     <img
                       src={course.image}
