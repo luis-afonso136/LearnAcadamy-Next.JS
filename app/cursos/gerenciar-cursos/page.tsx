@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../../components/ui/table";
-import { Skeleton } from "../../../components/ui/skeleton"; // Importando o Skeleton
+import { Skeleton } from "../../../components/ui/skeleton"; 
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { toast } from "../../../hooks/use-toast";
